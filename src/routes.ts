@@ -1,0 +1,33 @@
+import { Router } from 'express';
+import authRoutes from './modules/auth/auth.routes.js';
+import userRoutes from './modules/users/admin.routes.js';
+import serviceRoutes from './modules/services/services.routes.js';
+import stylistRoutes from './modules/stylists/stylists.routes.js';
+import scheduleRoutes from './modules/schedules/schedules.routes.js';
+import bookingRoutes from './modules/bookings/bookings.routes.js';
+import ratingRoutes from './modules/ratings/ratings.routes.js';
+import reportRoutes from './modules/reports/reports.routes.js';
+import notificationRoutes from './modules/notifications/notifications.routes.js';
+import healthRoutes from './modules/health/health.routes.js';
+import catalogRoutes from './modules/catalog/catalog.routes.js';
+import appointmentRoutes from './modules/appointments/appointments.routes.js';
+import slotRoutes from './modules/slots/slots.routes.js';
+import paymentRoutes from './modules/payments/payments.routes.js';
+const router = Router();
+
+router.use(healthRoutes);
+router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
+router.use('/services', serviceRoutes);
+router.use('/stylists', stylistRoutes);
+router.use('/schedules', scheduleRoutes);
+router.use('/bookings', bookingRoutes);
+router.use('/ratings', ratingRoutes);
+router.use('/reports', reportRoutes);
+router.use('/notifications', notificationRoutes);
+router.use('/catalog', catalogRoutes);
+router.use('/appointments', appointmentRoutes);
+router.use('/slots', slotRoutes);
+router.use('/payments', paymentRoutes);
+
+export default router;

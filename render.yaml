@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: lina-salon-backend
+    env: node
+    region: frankfurt
+    plan: free
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: NODE_ENV
+        value: production
