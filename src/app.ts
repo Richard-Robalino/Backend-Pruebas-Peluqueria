@@ -12,7 +12,7 @@ import routerV1 from './routes.js';
 
 const app = express();
 
-// Security & parsing
+// Seguridad & parsing
 app.use(helmet());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -20,35 +20,38 @@ app.use(cookieParser());
 app.use(hpp());
 app.use(mongoSanitize());
 
-// CORS
-const origins = env.CLIENT_ORIGINS.split(',').map(o => o.trim());
+// CORS — compatible con Render
+const allowedOrigins = [
+  ...env.CLIENT_ORIGINS.split(',').map(o => o.trim()),
+  'https://lina-salon-frontend.onrender.com', // poner tu URL real
+];
+
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (origins.indexOf(origin) !== -1) callback(null, true);
-    else callback(new Error('CORS not allowed'));
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // Postman, móviles, etc.
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('CORS not allowed: ' + origin));
   },
   credentials: true
 }));
 
-// Logging
+// Logs
 if (env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
 // Rate limiting
-const apiLimiter = rateLimit({
+app.use('/api', rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MIN * 60 * 1000,
   max: env.RATE_LIMIT_MAX,
   standardHeaders: true,
   legacyHeaders: false
-});
-app.use('/api', apiLimiter);
+}));
 
-// Versioned routes
+// Routes
 app.use('/api/v1', routerV1);
 
-// 404 & error
+// 404 & manejador errores
 app.use(notFoundHandler);
 app.use(errorHandler);
 
