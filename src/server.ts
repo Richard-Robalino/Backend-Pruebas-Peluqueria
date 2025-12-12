@@ -9,7 +9,7 @@ import 'dotenv/config';
 async function bootstrap() {
   await connect();
   const server = app.listen(env.PORT, () => {
-    console.log(`API listening on http://localhost:${env.PORT}`);
+    console.log(`API listening on port ${env.PORT}`);
     // Inicializar job de recordatorios de citas
     startAppointmentReminderJob();
   });
